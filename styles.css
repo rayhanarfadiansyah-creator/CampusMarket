@@ -1209,3 +1209,26 @@ input:checked+.slider:before {
     height: 4rem;
   }
 }
+
+/* Mobile usability improvements */
+@media (max-width: 640px) {
+  img {
+    max-width: 100%;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    max-width: 100%;
+  }
+
+  .nav-wrapper {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .site-footer {
+    padding-bottom: 2rem;
+  }
+}
