@@ -548,22 +548,42 @@ const UI = {
     if (modal) modal.classList.add('active');
   },
 
+  
   adjustOrderQty(delta) {
     if (!this.activeOrderMenu) return;
-    const maxStock = Number(this.activeOrderMenu.Stok) || 50;
-    const newQty = this.activeOrderQty + delta;
-    if (newQty < 1) return;
-    if (newQty > maxStock) {
-      UI.showToast(`Batas pesanan maksimal: ${maxStock} porsi (sesuai sisa stok)`, 'info');
+
+    const stockValue = Number(this.activeOrderMenu.Stok);
+    const maxStock = Number.isFinite(stockValue) && stockValue >= 0
+      ? stockValue
+      : 0;
+
+    if (maxStock === 0) {
+      UI.showToast('Maaf, stok menu ini sudah habis.', 'error');
       return;
     }
+
+    const newQty = this.activeOrderQty + delta;
+
+    if (newQty < 1) return;
+
+    if (newQty > maxStock) {
+      UI.showToast(
+        `Batas pesanan maksimal: ${maxStock} porsi (sesuai sisa stok)`,
+        'info'
+      );
+      return;
+    }
+
     if (newQty > 50) return;
 
     this.activeOrderQty = newQty;
     document.getElementById('orderModalQty').textContent = String(newQty);
+
     const total = this.activeOrderMenu.Harga * newQty;
-    document.getElementById('orderModalTotal').textContent = this.formatRupiah(total);
+    document.getElementById('orderModalTotal').textContent =
+      this.formatRupiah(total);
   },
+
 
   submitOrderToWhatsapp(event) {
     if (event) event.preventDefault();
