@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusMarket - Toko Kuliner Mahasiswa Kampus</title>
+  <meta name="description"
+    content="Pesan makanan dan minuman favorit mahasiswa kampus langsung via WhatsApp tanpa perlu login atau daftar akun!">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- ================= SITE HEADER ================= -->
+  <header class="site-header" id="siteHeader">
+    <div class="container">
+      <div class="nav-wrapper">
+        <a href="#" class="brand-logo" id="brandLogo">
+          <!-- SVG Logo: Shopping Bag with Academic Graduation Cap -->
+          <div class="brand-icon-box">
+            <svg width="30" height="30" viewBox="0 0 36 36" fill="none">
+              <!-- Shopping Bag Body -->
+              <rect x="7" y="13" width="22" height="18" rx="4" fill="#FF5722" />
+              <rect x="9" y="15" width="18" height="14" rx="2.5" fill="#F4511E" />
+              <!-- Bag Handles -->
+              <path d="M13 13V9.5C13 6.7 15.2 4.5 18 4.5C20.8 4.5 23 6.7 23 9.5V13" stroke="#FF5722" stroke-width="2.5"
+                stroke-linecap="round" />
+              <!-- Academic Graduation Cap (Toga) -->
+              <polygon points="18,7 27,11.5 18,16 9,11.5" fill="#FFFFFF" stroke="#0F172A" stroke-width="1.2"
+                stroke-linejoin="round" />
+              <!-- Tassel / Rumbai Toga -->
+              <path d="M25 12.5V16.5" stroke="#FF9800" stroke-width="1.5" stroke-linecap="round" />
+              <circle cx="25" cy="17" r="1" fill="#FF9800" />
+              <!-- Book Base -->
+              <rect x="6" y="29.5" width="24" height="2.5" rx="1.2" fill="#E64A19" />
+            </svg>
+          </div>
+          <div class="brand-text">
+            <h1>Campus<span class="text-accent-market">Market</span></h1>
+            <span>Kuliner Mahasiswa Kampus</span>
+          </div>
+        </a>
+
+        <div class="nav-actions">
+          <!-- Mau Titip Jual WhatsApp Button -->
+          <button class="seller-wa-pill" id="headerWaPill" onclick="UI.openTitipJualWhatsapp()"
+            title="Klik untuk titip jual produk kuliner Anda ke WhatsApp Admin">
+            <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z" />
+            </svg>
+            <span id="headerWaText">💬 Mau Titip Jual? Chat Admin</span>
+          </button>
+
+          <!-- Admin Only Access Button -->
+          <button class="btn btn-admin btn-sm" id="headerAdminBtn" onclick="UI.handleAdminButtonClick()">
+            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            Kelola Produk (Admin)
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO SECTION ================= -->
+  <section class="hero-section" id="heroSection">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-tag">
+          <svg width="14" height="14" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+              clip-rule="evenodd" />
+          </svg>
+          Pesan Makanan Kampus Tanpa Ribet Daftar Akun
+        </div>
+        <h2 class="hero-title">
+          Kuliner Pilihan Mahasiswa, <br>
+          <span class="highlight">Langsung Pesan Cepat</span> via WhatsApp
+        </h2>
+        <p class="hero-desc">
+          Pilih menu makan siang hemat, camilan favorit, dan Open PO spesial. Cukup klik pesan, format order otomatis
+          terkirim langsung ke WhatsApp penjual!
+        </p>
+
+        <!-- Search Bar -->
+        <div class="search-box-card" id="searchBoxCard">
+          <div class="search-input-wrapper">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              style="color:var(--text-muted)">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input type="text" id="searchInput" class="search-input"
+              placeholder="Cari ayam geprek, bento curry, brownies, atau kopi..." autocomplete="off">
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="document.getElementById('searchInput').focus()">
+            Cari Menu
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MAIN CONTENT & CATALOG ================= -->
+  <main class="container catalog-section" id="mainContent">
+
+    <!-- Filter Toolbar -->
+    <div class="filter-toolbar" id="filterToolbar">
+      <!-- Category Chips -->
+      <div class="filter-categories-scroll" id="categoryChips">
+        <button class="category-chip active" data-category="Semua">Semua Menu</button>
+        <button class="category-chip" data-category="Makanan Berat">🍛 Makanan Berat</button>
+        <button class="category-chip" data-category="Camilan">🥟 Camilan & Snack</button>
+        <button class="category-chip" data-category="Minuman">🥤 Minuman Segar</button>
+        <button class="category-chip" data-category="Dessert">🍰 Dessert & Bakery</button>
+      </div>
+
+      <!-- Sub Filter Controls -->
+      <div class="sub-filter-row">
+        <div class="status-toggles" id="statusToggles">
+          <button class="status-btn active" data-status="Semua">Semua Status</button>
+          <button class="status-btn" data-status="ReadyStock">⚡ Ready Stock (Siap Santap)</button>
+          <button class="status-btn" data-status="OpenPO">📅 Open PO (Pre-Order)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Catalog Header -->
+    <div class="catalog-header">
+      <h2 class="catalog-title">Daftar Menu Makanan Hari Ini</h2>
+      <span class="catalog-count" id="catalogCount">Memuat menu...</span>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="products-grid" id="productsGrid">
+      <!-- Injected by UI.renderCatalog() -->
+    </div>
+  </main>
+
+  <!-- ================= BUYER ORDER MODAL (WHATSAPP CHECKOUT) ================= -->
+  <div class="modal-overlay" id="orderModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            style="color:var(--brand-orange)">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+          Formulir Pesanan Mahasiswa
+        </h3>
+        <button class="modal-close-btn" onclick="UI.closeAllModals()" title="Tutup">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="order-summary-box">
+          <div class="order-seller-info">
+            <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z" />
+            </svg>
+            <span>Tujuan WhatsApp Penjual: <strong id="orderModalSellerWa">0812-3456-7890</strong></span>
+          </div>
+
+          <div class="order-item-row">
+            <div>
+              <strong id="orderModalItemTitle" style="font-size:0.95rem; color:var(--text-main);">Nama Makanan</strong>
+              <div id="orderModalItemCategory" style="font-size:0.75rem; color:var(--text-muted);">Kategori</div>
+              <div id="orderModalItemPrice"
+                style="font-size:0.85rem; font-weight:700; color:var(--brand-orange); margin-top:2px;">Rp 0</div>
+            </div>
+
+            <div class="qty-control">
+              <button class="qty-btn" onclick="UI.adjustOrderQty(-1)">-</button>
+              <span class="qty-num" id="orderModalQty">1</span>
+              <button class="qty-btn" onclick="UI.adjustOrderQty(1)">+</button>
+            </div>
+          </div>
+
+          <div class="order-total-row">
+            <span>Total Pembayaran:</span>
+            <span id="orderModalTotal">Rp 0</span>
+          </div>
+        </div>
+
+        <form id="orderCheckoutForm" onsubmit="UI.submitOrderToWhatsapp(event)">
+          <div class="form-group">
+            <label class="form-label" for="orderBuyerName">Nama Anda (Mahasiswa): *</label>
+            <input type="text" id="orderBuyerName" class="form-input" placeholder="Contoh: Dimas Aditya" required>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="orderBuyerCampus">Fakultas / Jurusan / Kelas:</label>
+              <input type="text" id="orderBuyerCampus" class="form-input" placeholder="Contoh: Bisnis / Manajemen / 3B">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="orderLocationInput">Titik COD / Antar di Kampus: *</label>
+              <input type="text" id="orderLocationInput" class="form-input"
+                placeholder="Lobi Gedung A, Kantin, atau Ruang Kelas..." required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="orderNoteInput">Catatan Khusus Penjual (Opsional):</label>
+            <textarea id="orderNoteInput" class="form-textarea" rows="2"
+              placeholder="Misal: Sambal dipisah ya kak, atau diantar jam 12.00"></textarea>
+          </div>
+
+          <button type="submit" class="whatsapp-submit-btn" id="btnSubmitWhatsapp">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z" />
+            </svg>
+            Kirim Pesanan ke WhatsApp Penjual
+          </button>
+          <p class="form-hint" style="text-align:center; margin-top:0.6rem;">
+            Format draf pesanan resmi akan tersusun otomatis di chat WhatsApp penjual.
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= ADMIN LOGIN MODAL ================= -->
+  <div class="modal-overlay" id="adminLoginModal">
+    <div class="modal-card" style="max-width:440px;">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            style="color:var(--brand-orange)">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+          Masuk Panel Pemilik Toko
+        </h3>
+        <button class="modal-close-btn" onclick="UI.closeAllModals()" title="Tutup">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:1.25rem;">
+          Area ini khusus untuk pemilik toko untuk memasukkan, mengubah, dan menghapus produk makanan.
+        </p>
+
+        <form id="adminLoginForm" onsubmit="UI.handleAdminLogin(event)">
+          <div class="form-group">
+            <label class="form-label" for="adminPasswordInput">Password Admin Toko: *</label>
+            <input type="password" id="adminPasswordInput" class="form-input" placeholder="Masukkan password admin"
+              required>
+            <p class="form-hint">Password bawaan: <code>admin123</code> (bisa diganti di dalam panel).</p>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%; padding:0.75rem;">
+            Buka Panel Admin
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= ADMIN MANAGEMENT PANEL MODAL ================= -->
+  <div class="modal-overlay" id="adminPanelModal">
+    <div class="modal-card modal-card-lg">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">
+            <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              style="color:var(--brand-orange)">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+            Panel Pengelolaan Produk & Toko
+          </h3>
+          <span style="font-size:0.75rem; color:var(--text-muted);">Kontrol penuh produk & nomor WhatsApp penjual</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:0.6rem;">
+          <button class="btn btn-outline btn-sm" onclick="UI.handleAdminLogout()">Keluar Admin</button>
+          <button class="modal-close-btn" onclick="UI.closeAllModals()" title="Tutup">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <!-- Store Status Switch -->
+        <div class="store-toggle-box">
+          <div>
+            <strong>Status Buka / Tutup Toko</strong>
+            <p style="font-size:0.78rem; color:var(--text-muted);">Jika toko ditutup, tombol pemesanan di katalog akan
+              dinonaktifkan sementara.</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="adminStoreToggle" onchange="UI.toggleStoreStatus(this)" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <!-- Dashboard Stats -->
+        <div class="dashboard-stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Produk Aktif</div>
+            <div class="stat-value" id="adminStatTotalMenu">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Klik Pesanan WhatsApp</div>
+            <div class="stat-value" id="adminStatTotalOrders" style="color:var(--brand-orange);">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Status Toko Saat Ini</div>
+            <div class="stat-value" id="adminStatStatus" style="font-size:1.1rem; color:#10b981;">Buka</div>
+          </div>
+        </div>
+
+        <!-- Store WhatsApp & Password Settings -->
+        <details
+          style="background:var(--bg-subtle); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:1rem; margin-bottom:1.25rem;">
+          <summary
+            style="font-weight:700; cursor:pointer; color:var(--brand-navy); display:flex; align-items:center; gap:0.4rem;">
+            <svg width="17" height="17" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            </svg>
+            ⚙️ Pengaturan Nomor WhatsApp Penjual & Password
+          </summary>
+
+          <form id="storeSettingsForm" onsubmit="UI.handleSaveStoreSettings(event)" style="margin-top:1rem;">
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label" for="adminStoreNameInput">Nama Brand Toko:</label>
+                <input type="text" id="adminStoreNameInput" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="adminStoreWaInput">Nomor WhatsApp Anda (Tujuan Pesanan): *</label>
+                <input type="tel" id="adminStoreWaInput" class="form-input" placeholder="081234567890" required>
+                <p class="form-hint">Nomor ini yang otomatis dituju oleh semua pesanan mahasiswa.</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="adminStorePasswordInput">Password Baru Admin:</label>
+              <input type="text" id="adminStorePasswordInput" class="form-input" required>
+            </div>
+            <button type="submit" class="btn btn-outline btn-sm">
+              Simpan Pengaturan Toko
+            </button>
+          </form>
+        </details>
+
+        <!-- Form Tambah Produk Baru -->
+        <details open
+          style="background:var(--bg-subtle); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:1rem; margin-bottom:1.5rem;">
+          <summary
+            style="font-weight:700; cursor:pointer; color:var(--brand-orange); display:flex; align-items:center; gap:0.4rem;">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            + Tambah Produk Makanan / Minuman Baru
+          </summary>
+
+          <form id="addMenuForm" onsubmit="UI.handleAddMenu(event)" style="margin-top:1rem;">
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label" for="menuFormTitle">Nama Produk Makanan: *</label>
+                <input type="text" id="menuFormTitle" class="form-input"
+                  placeholder="Contoh: Rice Bowl Ayam Sambal Matah" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="menuFormCategory">Kategori: *</label>
+                <select id="menuFormCategory" class="form-select" required>
+                  <option value="Makanan Berat">Makanan Berat</option>
+                  <option value="Camilan">Camilan & Snack</option>
+                  <option value="Minuman">Minuman Segar</option>
+                  <option value="Dessert">Dessert & Bakery</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label" for="menuFormPrice">Harga (Rupiah): *</label>
+                <input type="number" id="menuFormPrice" class="form-input" placeholder="15000" min="500" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="menuFormStock">Sisa Stok (Porsi): *</label>
+                <input type="number" id="menuFormStock" class="form-input" placeholder="15" min="0" value="15" required>
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label" for="menuFormType">Tipe Penjualan: *</label>
+                <select id="menuFormType" class="form-select" required>
+                  <option value="ReadyStock">⚡ Ready Stock (Siap Santap Hari Ini)</option>
+                  <option value="OpenPO">📅 Open PO (Pre-Order Terjadwal)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="menuFormCustomWa">No. WA Khusus Titip Jual (Opsional):</label>
+                <input type="tel" id="menuFormCustomWa" class="form-input"
+                  placeholder="0857... (Kosongkan jika pakai WA Toko)">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="menuFormPhoto">Link Foto Makanan (URL Unsplash / Gambar):</label>
+              <input type="url" id="menuFormPhoto" class="form-input" placeholder="https://images.unsplash.com/...">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="menuFormSchedule">Jadwal Pengantaran / Batas Waktu PO:</label>
+              <input type="text" id="menuFormSchedule" class="form-input"
+                placeholder="Misal: Ready jam 12:00 di Lobi A atau Tutup PO jam 10:00">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="menuFormDesc">Deskripsi Menu Singkat:</label>
+              <textarea id="menuFormDesc" class="form-textarea" rows="2"
+                placeholder="Jelaskan isi porsi, rasa pedas/manis, atau keistimewaan menu..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width:100%; padding:0.75rem;">
+              Terbitkan Produk ke Web CampusMarket
+            </button>
+          </form>
+        </details>
+
+        <!-- Daftar Produk Toko -->
+        <div>
+          <h4 style="font-size:1rem; font-weight:700; margin-bottom:0.75rem;">Daftar Seluruh Produk Toko</h4>
+          <div id="adminMenuList">
+            <!-- Injected by UI.renderAdminMenuList() -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= EDIT PRODUCT MODAL ================= -->
+  <div class="modal-overlay" id="editProductModal">
+    <div class="modal-card modal-card-lg">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">
+            <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              style="color:var(--brand-orange)">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+            Edit Rincian Produk Makanan
+          </h3>
+          <span style="font-size:0.75rem; color:var(--text-muted);">Ubah nama, harga, nomor WhatsApp titip jual, atau
+            sisa stok</span>
+        </div>
+        <button class="modal-close-btn" onclick="UI.closeEditProductModal()" title="Tutup">
+          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form id="editProductForm" onsubmit="UI.handleSaveEditProduct(event)">
+          <input type="hidden" id="editMenuId">
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="editMenuTitle">Nama Produk Makanan: *</label>
+              <input type="text" id="editMenuTitle" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="editMenuCategory">Kategori: *</label>
+              <select id="editMenuCategory" class="form-select" required>
+                <option value="Makanan Berat">Makanan Berat</option>
+                <option value="Camilan">Camilan & Snack</option>
+                <option value="Minuman">Minuman Segar</option>
+                <option value="Dessert">Dessert & Bakery</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="editMenuPrice">Harga (Rupiah): *</label>
+              <input type="number" id="editMenuPrice" class="form-input" min="500" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="editMenuStock">Jumlah Sisa Stok (Porsi): *</label>
+              <input type="number" id="editMenuStock" class="form-input" min="0" required>
+              <p class="form-hint">Jika diset <code>0</code>, status produk otomatis menjadi <strong>Habis</strong>.</p>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="editMenuCustomWa">No. WhatsApp Khusus Titip Jual (Opsional):</label>
+              <input type="tel" id="editMenuCustomWa" class="form-input" placeholder="Contoh: 085712345678">
+              <p class="form-hint">Kosongkan jika menggunakan nomor WhatsApp utama toko Anda.</p>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="editMenuType">Tipe Penjualan: *</label>
+              <select id="editMenuType" class="form-select" required>
+                <option value="ReadyStock">⚡ Ready Stock (Siap Santap Hari Ini)</option>
+                <option value="OpenPO">📅 Open PO (Pre-Order Terjadwal)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="editMenuStatus">Status Ketersediaan: *</label>
+              <select id="editMenuStatus" class="form-select" required>
+                <option value="Tersedia">Tersedia</option>
+                <option value="Habis">Habis</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="editMenuSchedule">Jadwal Pengantaran / Batas Waktu PO:</label>
+              <input type="text" id="editMenuSchedule" class="form-input"
+                placeholder="Misal: Ready jam 12:00 di Lobi A">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="editMenuPhoto">Link Foto Makanan (URL Unsplash / Gambar):</label>
+            <input type="url" id="editMenuPhoto" class="form-input" placeholder="https://images.unsplash.com/...">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="editMenuDesc">Deskripsi Menu Singkat:</label>
+            <textarea id="editMenuDesc" class="form-textarea" rows="2"
+              placeholder="Jelaskan isi porsi atau keistimewaan menu..."></textarea>
+          </div>
+
+          <div style="display:flex; gap:0.75rem; justify-content:flex-end; margin-top:1.25rem;">
+            <button type="button" class="btn btn-outline" onclick="UI.closeEditProductModal()">
+              Batal
+            </button>
+            <button type="submit" class="btn btn-primary">
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              Simpan Perubahan Produk
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MOBILE BOTTOM NAVIGATION ================= -->
+  <nav class="mobile-bottom-nav">
+    <a href="#" class="nav-bottom-item active" onclick="UI.resetFilters()">
+      <svg class="nav-bottom-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+      </svg>
+      <span>Katalog</span>
+    </a>
+    <a href="#heroSection" class="nav-bottom-item" onclick="document.getElementById('searchInput').focus()">
+      <svg class="nav-bottom-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+      <span>Cari</span>
+    </a>
+    <a href="javascript:void(0)" class="nav-bottom-item"
+      onclick="document.querySelector('.status-btn[data-status=\'OpenPO\']').click()">
+      <svg class="nav-bottom-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+      </svg>
+      <span>Open PO</span>
+    </a>
+    <a href="javascript:void(0)" class="nav-bottom-item" id="bottomNavAdmin" onclick="UI.handleAdminButtonClick()">
+      <svg class="nav-bottom-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+      </svg>
+      <span>Admin</span>
+    </a>
+  </nav>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div style="font-weight:700; color:var(--brand-navy); font-size:1.05rem;">Campus<span
+          class="text-accent-market">Market</span></div>
+      <p>Katalog kuliner mahasiswa kampus praktis dengan pemesanan langsung ke WhatsApp penjual.</p>
+      <p style="font-size:0.75rem; color:var(--text-light);">&copy; 2026 CampusMarket. Arsitektur direkayasa dengan
+        standar ZettBOT by Zettbos.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
