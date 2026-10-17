@@ -293,17 +293,26 @@ const UI = {
     return 'Rp ' + Number(num).toLocaleString('id-ID');
   },
 
-  normalizeWhatsapp(phone) {
-    let clean = (phone || '').replace(/\D/g, '');
+    normalizeWhatsapp(phone) {
+    let clean = String(phone || '').replace(/\D/g, '');
+
+    if (!clean) return '';
+
     if (clean.startsWith('0')) {
       clean = '62' + clean.slice(1);
     } else if (!clean.startsWith('62')) {
       clean = '62' + clean;
     }
+
+    // Nomor WhatsApp Indonesia harus memiliki panjang yang wajar.
+    if (!/^62\d{8,13}$/.test(clean)) {
+      return '';
+    }
+
     return clean;
   },
 
-  renderStoreHeaderInfo() {
+  renderStoreHeaderInfo() {  renderStoreHeaderInfo() {
     const waPill = document.getElementById('headerWaPill');
     const waText = document.getElementById('headerWaText');
     if (waPill && waText) {
@@ -603,6 +612,13 @@ const UI = {
     const subtotal = this.activeOrderMenu.Harga * this.activeOrderQty;
     const targetWaNumber = this.activeOrderMenu.CustomWhatsapp || StateStore.settings.nomorWhatsapp;
     const targetWa = UI.normalizeWhatsapp(targetWaNumber);
+    if (!targetWa) {
+      UI.showToast(
+        'Nomor WhatsApp penjual belum valid. Hubungi admin toko.',
+        'error'
+      );
+      return;
+    }
 
     // Official order template directly to the designated WhatsApp
     const messageLines = [
