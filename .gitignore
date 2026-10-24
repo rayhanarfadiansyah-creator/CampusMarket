@@ -1,0 +1,21 @@
+
+# Konfigurasi lokal dan kredensial
+.env
+config/local.php
+
+# File upload pengguna
+uploads/products/*
+uploads/payments/*
+!uploads/products/.gitkeep
+!uploads/payments/.gitkeep
+
+# Database dan backup lokal
+*.sql
+*.sql.zip
+*.bak
+
+# File sistem/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
