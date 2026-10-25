@@ -203,159 +203,239 @@ $canUpload = in_array(
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pembayaran Pesanan — CampusMarket</title>
     <link rel="stylesheet" href="assets/style.css">
+    ```html
+<style>
+    * {
+        box-sizing: border-box;
+    }
 
-    <style>
-        body {
-            background: #fff9f0;
-            color: #242424;
-            font-family: Arial, sans-serif;
-        }
+    body {
+        margin: 0;
+        background: #f7f9fc;
+        color: #243047;
+        font-family: "Trebuchet MS", Arial, sans-serif;
+    }
 
+    .payment-wrap {
+        width: min(760px, calc(100% - 28px));
+        margin: 28px auto 60px;
+    }
+
+    .payment-card {
+        background: #fff;
+        border: 1px solid #e2eaf4;
+        border-radius: 20px;
+        padding: 24px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 22px rgba(36, 65, 105, .06);
+    }
+
+    .payment-card h1,
+    .payment-card h2 {
+        color: #243e63;
+        margin-top: 0;
+    }
+
+    .payment-card h1 {
+        font-size: clamp(25px, 5vw, 32px);
+        letter-spacing: -.8px;
+        margin-bottom: 22px;
+    }
+
+    .payment-card h2 {
+        font-size: 19px;
+    }
+
+    .payment-card > p:first-child {
+        color: #4778b6;
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 1px;
+    }
+
+    .payment-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 13px 0;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+    .payment-row:last-child {
+        border-bottom: 0;
+    }
+
+    .payment-row span:first-child {
+        color: #7b8799;
+    }
+
+    .payment-row strong {
+        text-align: right;
+        overflow-wrap: anywhere;
+    }
+
+    .payment-total {
+        font-size: 21px;
+        font-weight: 900;
+        color: #f07832;
+    }
+
+    .bank-box {
+        background: #edf4ff;
+        border: 1px solid #d6e5fa;
+        border-radius: 16px;
+        padding: 20px;
+        overflow-wrap: anywhere;
+    }
+
+    .bank-box p {
+        margin: 8px 0;
+        color: #71819a;
+        font-size: 13px;
+    }
+
+    .bank-box h2 {
+        margin-bottom: 18px;
+        color: #285a9c;
+    }
+
+    .bank-number {
+        font-size: clamp(20px, 4vw, 26px);
+        font-weight: 900;
+        letter-spacing: 1px;
+        color: #244d83;
+        overflow-wrap: anywhere;
+    }
+
+    .payment-card label {
+        display: block;
+        margin: 16px 0 9px;
+        font-weight: 700;
+        font-size: 14px;
+        color: #34445e;
+    }
+
+    .payment-card input[type="file"] {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #dce5f0;
+        border-radius: 12px;
+        background: #f9fbfe;
+        color: #34445e;
+        font-size: 13px;
+    }
+
+    .payment-card input[type="file"]:focus {
+        outline: 2px solid #bcd8ff;
+        border-color: #6c9edb;
+    }
+
+    .payment-btn {
+        display: block;
+        width: 100%;
+        margin-top: 20px;
+        padding: 15px;
+        border: 0;
+        border-radius: 12px;
+        background: #f47b36;
+        color: #fff;
+        font-weight: 900;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background .2s, transform .2s;
+    }
+
+    .payment-btn:hover {
+        background: #e96b28;
+        transform: translateY(-1px);
+    }
+
+    .notice {
+        padding: 14px 16px;
+        border-radius: 12px;
+        margin-bottom: 17px;
+        line-height: 1.65;
+        font-size: 13px;
+    }
+
+    .notice.success {
+        background: #eaf8ef;
+        border: 1px solid #c9e9d4;
+        color: #267344;
+    }
+
+    .notice.error {
+        background: #fff0f0;
+        border: 1px solid #f1d0d0;
+        color: #b83c3c;
+    }
+
+    .status {
+        display: inline-block;
+        padding: 7px 11px;
+        background: #fff4df;
+        color: #99641e;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 800;
+        text-align: center;
+    }
+
+    .muted {
+        color: #7b8799;
+        line-height: 1.7;
+        font-size: 13px;
+    }
+
+    .back-link {
+        display: inline-flex;
+        margin-bottom: 18px;
+        font-size: 14px;
+        font-weight: 800;
+        color: #3169b2;
+    }
+
+    .back-link:hover {
+        color: #f07832;
+    }
+
+    @media (max-width: 480px) {
         .payment-wrap {
-            width: min(760px, calc(100% - 28px));
-            margin: 32px auto 60px;
+            width: calc(100% - 24px);
+            margin-top: 18px;
         }
 
         .payment-card {
-            background: #fff;
-            border: 2px solid #242424;
-            border-radius: 20px;
-            padding: 24px;
-            margin-bottom: 18px;
-            box-shadow: 4px 4px 0 #242424;
-        }
-
-        .payment-card h1,
-        .payment-card h2 {
-            margin-top: 0;
-        }
-
-        .payment-card h1 {
-            font-size: 28px;
-        }
-
-        .payment-card h2 {
-            font-size: 19px;
+            padding: 18px;
+            border-radius: 17px;
+            margin-bottom: 16px;
         }
 
         .payment-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 16px;
-            padding: 11px 0;
-            border-bottom: 1px solid #eee5d9;
-        }
-
-        .payment-row:last-child {
-            border-bottom: 0;
+            gap: 12px;
+            font-size: 13px;
         }
 
         .payment-row span:first-child {
-            color: #6c665c;
+            flex: 0 0 42%;
         }
 
-        .payment-total {
-            font-size: 22px;
-            font-weight: 900;
-            color: #e75525;
+        .payment-row strong {
+            min-width: 0;
         }
 
         .bank-box {
-            background: #fff0d5;
-            border: 2px dashed #ff6b35;
-            border-radius: 14px;
-            padding: 18px;
-            overflow-wrap: anywhere;
+            padding: 16px;
         }
 
-        .bank-number {
-            font-size: 22px;
-            font-weight: 900;
-            letter-spacing: 1px;
+        .payment-total {
+            font-size: 18px;
         }
-
-        .payment-card label {
-            display: block;
-            margin: 14px 0 8px;
-            font-weight: 700;
-        }
-
-        .payment-card input[type="file"] {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #c9c1b6;
-            border-radius: 10px;
-            background: #fff;
-        }
-
-        .payment-btn {
-            display: block;
-            width: 100%;
-            margin-top: 18px;
-            padding: 14px;
-            border: 2px solid #242424;
-            border-radius: 12px;
-            background: #ff6b35;
-            color: #fff;
-            font-weight: 900;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: 0 3px 0 #242424;
-        }
-
-        .notice {
-            padding: 13px 15px;
-            border-radius: 10px;
-            margin-bottom: 16px;
-            line-height: 1.5;
-        }
-
-        .notice.success {
-            background: #e7f6dc;
-            border: 1px solid #9ac789;
-        }
-
-        .notice.error {
-            background: #ffe1df;
-            border: 1px solid #e49a94;
-        }
-
-        .status {
-            display: inline-block;
-            padding: 7px 11px;
-            background: #fff0d5;
-            border-radius: 999px;
-            font-size: 13px;
-            font-weight: 800;
-        }
-
-        .muted {
-            color: #6c665c;
-            line-height: 1.6;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-bottom: 18px;
-            font-weight: 800;
-            color: #d94f20;
-        }
-
-        @media (max-width: 480px) {
-            .payment-card {
-                padding: 18px;
-            }
-
-            .payment-row {
-                font-size: 14px;
-            }
-
-            .bank-number {
-                font-size: 18px;
-            }
-        }
-    </style>
+    }
+</style>
+```
 </head>
 <body>
 

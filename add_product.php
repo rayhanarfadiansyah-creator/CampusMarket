@@ -89,232 +89,308 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Tambah Produk - CampusMarket</title>
     <link rel="stylesheet" href="assets/style.css">
+    ```html
+<style>
+    :root {
+        --blue: #1769aa;
+        --blue-dark: #104c80;
+        --orange: #ff773d;
+        --bg: #f3f7fc;
+        --white: #ffffff;
+        --text: #1d2939;
+        --muted: #667085;
+        --border: #dce5f0;
+    }
 
-    <style>
-        .add-product-page {
-            width: min(1080px, calc(100% - 32px));
-            margin: 24px auto 60px;
-        }
+    * {
+        box-sizing: border-box;
+    }
 
-        .add-product-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 14px;
-            margin-bottom: 28px;
-        }
+    body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Arial, sans-serif;
+    }
 
-        .add-product-nav-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            font-weight: 700;
-        }
+    .add-product-page {
+        width: min(1080px, calc(100% - 32px));
+        margin: 24px auto 60px;
+    }
 
-        .add-product-nav-links a:hover {
-            color: var(--orange);
-        }
+    .add-product-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-bottom: 28px;
+    }
 
+    .add-product-nav .logo {
+        color: var(--blue-dark);
+        font-size: 24px;
+        font-weight: 900;
+        text-decoration: none;
+    }
+
+    .add-product-nav .logo span {
+        color: var(--orange);
+    }
+
+    .add-product-nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        font-weight: 700;
+    }
+
+    .add-product-nav-links a {
+        color: var(--blue-dark);
+        text-decoration: none;
+        transition: color .2s;
+    }
+
+    .add-product-nav-links a:hover {
+        color: var(--orange);
+    }
+
+    .add-product-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(220px, .8fr);
+        gap: 28px;
+        align-items: start;
+    }
+
+    .add-product-card {
+        min-width: 0;
+        padding: clamp(20px, 4vw, 34px);
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        box-shadow: 0 8px 28px rgba(26, 65, 110, .07);
+    }
+
+    .add-product-heading {
+        margin-bottom: 24px;
+    }
+
+    .eyebrow {
+        display: inline-block;
+        padding: 8px 12px;
+        background: #e5f1ff;
+        color: var(--blue);
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 1px;
+    }
+
+    .add-product-heading h1 {
+        margin: 16px 0 10px;
+        color: var(--blue-dark);
+        font-size: clamp(28px, 4vw, 40px);
+        line-height: 1.15;
+        letter-spacing: -1px;
+    }
+
+    .add-product-heading p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+    }
+
+    .add-product-form label {
+        display: block;
+        margin: 19px 0 8px;
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 800;
+    }
+
+    .add-product-form input:not([type="hidden"]):not([type="file"]),
+    .add-product-form textarea,
+    .add-product-form select {
+        display: block;
+        width: 100%;
+        padding: 13px 14px;
+        border: 1px solid #d5dfeb;
+        border-radius: 11px;
+        background: #fbfdff;
+        color: var(--text);
+        font: inherit;
+        outline: none;
+        transition: border-color .2s, box-shadow .2s;
+    }
+
+    .add-product-form input:focus,
+    .add-product-form textarea:focus,
+    .add-product-form select:focus {
+        border-color: var(--blue);
+        box-shadow: 0 0 0 3px rgba(23, 105, 170, .12);
+    }
+
+    .add-product-form textarea {
+        min-height: 125px;
+        resize: vertical;
+        line-height: 1.6;
+    }
+
+    .add-product-form input[type="file"] {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        border: 1px dashed #a8bfd8;
+        border-radius: 11px;
+        background: #f6f9fd;
+        font: inherit;
+        font-size: 13px;
+    }
+
+    .add-product-help {
+        display: block;
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+    .add-product-error {
+        margin-bottom: 20px;
+        padding: 14px 16px;
+        background: #fff0ef;
+        color: #a12d26;
+        border: 1px solid #ffc9c4;
+        border-radius: 11px;
+        line-height: 1.6;
+    }
+
+    .add-product-submit {
+        display: block;
+        width: 100%;
+        margin-top: 24px;
+        padding: 14px 18px;
+        background: var(--orange);
+        color: #fff;
+        border: none;
+        border-radius: 11px;
+        font-size: 15px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: background .2s, transform .2s;
+    }
+
+    .add-product-submit:hover {
+        background: #ef632c;
+        transform: translateY(-1px);
+    }
+
+    .add-product-aside {
+        display: grid;
+        gap: 18px;
+    }
+
+    .add-product-promo {
+        padding: 25px;
+        background: var(--blue);
+        color: #fff;
+        border-radius: 20px;
+        box-shadow: 0 8px 20px rgba(23, 105, 170, .15);
+    }
+
+    .add-product-promo-icon {
+        margin-bottom: 14px;
+        font-size: 52px;
+    }
+
+    .add-product-promo h2 {
+        margin: 0 0 12px;
+        font-size: 23px;
+        line-height: 1.3;
+    }
+
+    .add-product-promo p {
+        margin: 0;
+        color: #e8f3ff;
+        line-height: 1.8;
+        font-size: 14px;
+    }
+
+    .add-product-tips {
+        padding: 22px;
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+    }
+
+    .add-product-tips h3 {
+        margin: 0 0 14px;
+        color: var(--blue-dark);
+    }
+
+    .add-product-tips ul {
+        margin: 0;
+        padding-left: 20px;
+    }
+
+    .add-product-tips li {
+        margin: 10px 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .add-product-tips li::marker {
+        color: var(--orange);
+    }
+
+    .add-product-footer {
+        margin-top: 34px;
+        color: var(--muted);
+        font-size: 13px;
+        text-align: center;
+    }
+
+    @media (max-width: 760px) {
         .add-product-layout {
-            display: grid;
-            grid-template-columns: minmax(0, 1.5fr) minmax(220px, .8fr);
-            gap: 28px;
-            align-items: start;
-        }
-
-        .add-product-card {
-            background: #fff;
-            border: 2px solid var(--ink);
-            border-radius: 24px;
-            padding: clamp(20px, 4vw, 34px);
-            box-shadow: 5px 5px 0 var(--ink);
-        }
-
-        .add-product-heading {
-            margin-bottom: 24px;
-        }
-
-        .add-product-heading h1 {
-            font-size: clamp(28px, 4vw, 40px);
-            line-height: 1.1;
-            margin: 16px 0 10px;
-        }
-
-        .add-product-heading p {
-            color: #6b6258;
-            line-height: 1.7;
-            margin: 0;
-        }
-
-        .add-product-form label {
-            display: block;
-            font-weight: 800;
-            margin: 19px 0 8px;
-        }
-
-        .add-product-form input:not([type="hidden"]):not([type="file"]),
-        .add-product-form textarea,
-        .add-product-form select {
-            display: block;
-            box-sizing: border-box;
-            width: 100%;
-            padding: 13px 14px;
-            border: 2px solid #e5ded4;
-            border-radius: 12px;
-            background: #fffdf9;
-            color: var(--ink);
-            font: inherit;
-            outline: none;
-            transition: border-color .18s, box-shadow .18s;
-        }
-
-        .add-product-form input:focus,
-        .add-product-form textarea:focus,
-        .add-product-form select:focus {
-            border-color: var(--orange);
-            box-shadow: 0 0 0 3px #ff6b3525;
-        }
-
-        .add-product-form textarea {
-            min-height: 125px;
-            resize: vertical;
-            line-height: 1.6;
-        }
-
-        .add-product-form input[type="file"] {
-            display: block;
-            box-sizing: border-box;
-            width: 100%;
-            padding: 12px;
-            border: 2px dashed #d8c9b7;
-            border-radius: 12px;
-            background: #fff9f0;
-            font: inherit;
-            font-size: 13px;
-        }
-
-        .add-product-help {
-            display: block;
-            color: #746b60;
-            font-size: 12px;
-            line-height: 1.6;
-            margin-top: 8px;
-        }
-
-        .add-product-error {
-            background: #ffe5e0;
-            color: #922d22;
-            border: 2px solid #922d22;
-            border-radius: 12px;
-            padding: 13px 15px;
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-
-        .add-product-submit {
-            width: 100%;
-            margin-top: 24px;
-            font-size: 15px;
+            grid-template-columns: 1fr;
         }
 
         .add-product-aside {
-            display: grid;
-            gap: 18px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 520px) {
+        .add-product-page {
+            width: calc(100% - 24px);
+            margin-top: 16px;
         }
 
-        .add-product-promo {
-            background: var(--yellow);
-            border: 2px solid var(--ink);
-            border-radius: 22px;
-            padding: 24px;
-            box-shadow: 4px 4px 0 var(--ink);
+        .add-product-nav {
+            margin-bottom: 20px;
         }
 
-        .add-product-promo-icon {
-            font-size: 56px;
-            margin-bottom: 12px;
-        }
-
-        .add-product-promo h2 {
-            font-size: 23px;
-            line-height: 1.2;
-            margin: 0 0 10px;
-        }
-
-        .add-product-promo p {
-            line-height: 1.7;
-            margin: 0;
-        }
-
-        .add-product-tips {
-            background: #e5f4db;
-            border: 2px solid var(--ink);
-            border-radius: 22px;
-            padding: 22px;
-        }
-
-        .add-product-tips h3 {
-            margin: 0 0 14px;
-        }
-
-        .add-product-tips ul {
-            margin: 0;
-            padding-left: 20px;
-        }
-
-        .add-product-tips li {
-            line-height: 1.7;
-            margin: 9px 0;
-        }
-
-        .add-product-footer {
-            text-align: center;
-            margin-top: 34px;
-            color: #746b60;
+        .add-product-nav-links {
+            gap: 12px;
             font-size: 13px;
         }
 
-        @media (max-width: 760px) {
-            .add-product-layout {
-                grid-template-columns: 1fr;
-            }
-
-            .add-product-aside {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
+        .add-product-card {
+            padding: 20px 16px;
+            border-radius: 16px;
         }
 
-        @media (max-width: 520px) {
-            .add-product-page {
-                width: calc(100% - 28px);
-                margin-top: 16px;
-            }
-
-            .add-product-nav {
-                margin-bottom: 20px;
-            }
-
-            .add-product-nav-links {
-                gap: 12px;
-                font-size: 13px;
-            }
-
-            .add-product-card {
-                border-radius: 18px;
-                padding: 20px 16px;
-                box-shadow: 4px 4px 0 var(--ink);
-            }
-
-            .add-product-aside {
-                grid-template-columns: 1fr;
-            }
-
-            .add-product-form input[type="file"] {
-                font-size: 12px;
-            }
+        .add-product-aside {
+            grid-template-columns: 1fr;
         }
-    </style>
+
+        .add-product-form input[type="file"] {
+            font-size: 12px;
+        }
+    }
+</style>
+```
 </head>
 <body>
 <main class="add-product-page">
@@ -336,7 +412,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <section class="add-product-card">
             <div class="add-product-heading">
                 <span class="eyebrow">✦ SAATNYA MULAI JUALAN</span>
-                <h1>Tambah produkmu! 🍜</h1>
+                <h1>Tambah produkmu! </h1>
                 <p>
                     Ceritakan produk andalanmu supaya teman-teman kampus
                     tahu apa yang kamu jual.
@@ -438,7 +514,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <aside class="add-product-aside">
             <section class="add-product-promo">
-                <div class="add-product-promo-icon" aria-hidden="true">🧋</div>
+                <div class="add-product-promo-icon" aria-hidden="true"></div>
                 <h2>Lapak kecil, mimpi besar!</h2>
                 <p>
                     Mulai kenalkan produkmu ke komunitas kampus.
@@ -460,7 +536,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <footer class="add-product-footer">
-        <p>CampusMarket · Jajan dekat, teman makin erat 💛</p>
+        <p>CampusMarket · Jajan dekat, teman makin erat </p>
     </footer>
 
 </main>

@@ -118,252 +118,299 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Edit Produk - CampusMarket</title>
     <link rel="stylesheet" href="assets/style.css">
 
-    <style>
-        .edit-page {
-            width: min(1080px, calc(100% - 32px));
-            margin: 24px auto 60px;
-        }
+<style>
+    .edit-page {
+        width: min(1080px, calc(100% - 32px));
+        margin: 24px auto 60px;
+        color: #172554;
+    }
 
-        .edit-nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 14px;
-            margin-bottom: 28px;
-        }
+    .edit-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-bottom: 28px;
+    }
 
-        .edit-nav-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            font-weight: 700;
-        }
+    .edit-nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        font-weight: 700;
+    }
 
-        .edit-nav-links a:hover {
-            color: var(--orange);
-        }
+    .edit-nav-links a {
+        color: #1e3a8a;
+        text-decoration: none;
+        transition: color .2s;
+    }
 
+    .edit-nav-links a:hover {
+        color: #f97316;
+    }
+
+    .edit-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(220px, .8fr);
+        align-items: start;
+        gap: 28px;
+    }
+
+    .edit-card {
+        background: #fff;
+        border: 1px solid #dbeafe;
+        border-radius: 24px;
+        padding: clamp(20px, 4vw, 34px);
+        box-shadow: 0 12px 35px rgba(30, 64, 175, .09);
+    }
+
+    .edit-heading {
+        margin-bottom: 24px;
+    }
+
+    .edit-heading h1 {
+        color: #1e3a8a;
+        font-size: clamp(28px, 4vw, 40px);
+        line-height: 1.1;
+        margin: 16px 0 10px;
+        letter-spacing: -1px;
+    }
+
+    .edit-heading p {
+        color: #64748b;
+        line-height: 1.7;
+        margin: 0;
+    }
+
+    .edit-form label {
+        display: block;
+        color: #1e3a8a;
+        font-weight: 700;
+        margin: 19px 0 8px;
+    }
+
+    .edit-form input:not([type="hidden"]):not([type="file"]),
+    .edit-form textarea,
+    .edit-form select {
+        display: block;
+        box-sizing: border-box;
+        width: 100%;
+        padding: 13px 14px;
+        border: 1.5px solid #cbd5e1;
+        border-radius: 12px;
+        background: #f8fafc;
+        color: #172554;
+        font: inherit;
+        outline: none;
+        transition: border-color .18s, box-shadow .18s, background .18s;
+    }
+
+    .edit-form input:focus,
+    .edit-form textarea:focus,
+    .edit-form select:focus {
+        border-color: #2563eb;
+        background: #fff;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, .1);
+    }
+
+    .edit-form textarea {
+        min-height: 125px;
+        resize: vertical;
+        line-height: 1.6;
+    }
+
+    .edit-form input[type="file"] {
+        display: block;
+        box-sizing: border-box;
+        width: 100%;
+        padding: 12px;
+        border: 1.5px dashed #93c5fd;
+        border-radius: 12px;
+        background: #eff6ff;
+        color: #1e3a8a;
+        font: inherit;
+        font-size: 13px;
+    }
+
+    .edit-help {
+        display: block;
+        color: #64748b;
+        font-size: 12px;
+        line-height: 1.6;
+        margin-top: 8px;
+    }
+
+    .edit-error {
+        background: #fff1f2;
+        color: #be123c;
+        border: 1px solid #fecdd3;
+        border-radius: 12px;
+        padding: 13px 15px;
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+
+    .current-photo {
+        background: #eff6ff;
+        border: 1px solid #dbeafe;
+        border-radius: 16px;
+        padding: 12px;
+        margin-top: 10px;
+    }
+
+    .current-photo img {
+        display: block;
+        width: 100%;
+        max-width: 300px;
+        max-height: 260px;
+        object-fit: contain;
+        border-radius: 10px;
+        margin: 0 auto;
+    }
+
+    .no-current-photo {
+        min-height: 120px;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        font-size: 42px;
+        color: #2563eb;
+    }
+
+    .edit-submit {
+        width: 100%;
+        margin-top: 24px;
+        padding: 15px 20px;
+        border: none;
+        border-radius: 12px;
+        background: #2563eb;
+        color: #fff;
+        font-size: 15px;
+        font-weight: 800;
+        cursor: pointer;
+        box-shadow: 0 5px 0 #1e40af;
+        transition: transform .18s, background .18s, box-shadow .18s;
+    }
+
+    .edit-submit:hover {
+        background: #1d4ed8;
+        transform: translateY(-2px);
+        box-shadow: 0 7px 0 #1e40af;
+    }
+
+    .edit-submit:active {
+        transform: translateY(2px);
+        box-shadow: 0 2px 0 #1e40af;
+    }
+
+    .edit-aside {
+        display: grid;
+        gap: 18px;
+    }
+
+    .edit-promo {
+        background: #dbeafe;
+        border: 1px solid #bfdbfe;
+        border-radius: 22px;
+        padding: 24px;
+        box-shadow: 0 8px 24px rgba(37, 99, 235, .08);
+    }
+
+    .edit-promo-icon {
+        font-size: 54px;
+        margin-bottom: 12px;
+    }
+
+    .edit-promo h2 {
+        color: #1e3a8a;
+        font-size: 23px;
+        line-height: 1.3;
+        margin: 0 0 10px;
+    }
+
+    .edit-promo p {
+        color: #475569;
+        line-height: 1.7;
+        margin: 0;
+    }
+
+    .edit-tips {
+        background: #fff7ed;
+        border: 1px solid #fed7aa;
+        border-radius: 22px;
+        padding: 22px;
+    }
+
+    .edit-tips h3 {
+        color: #9a3412;
+        margin: 0 0 12px;
+    }
+
+    .edit-tips p {
+        color: #7c2d12;
+        line-height: 1.7;
+        margin: 0;
+    }
+
+    .edit-footer {
+        text-align: center;
+        margin-top: 34px;
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    .edit-footer a {
+        color: #2563eb;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .edit-footer a:hover {
+        color: #f97316;
+    }
+
+    @media (max-width: 760px) {
         .edit-layout {
-            display: grid;
-            grid-template-columns: minmax(0, 1.5fr) minmax(220px, .8fr);
-            align-items: start;
-            gap: 28px;
-        }
-
-        .edit-card {
-            background: #fff;
-            border: 2px solid var(--ink);
-            border-radius: 24px;
-            padding: clamp(20px, 4vw, 34px);
-            box-shadow: 5px 5px 0 var(--ink);
-        }
-
-        .edit-heading {
-            margin-bottom: 24px;
-        }
-
-        .edit-heading h1 {
-            font-size: clamp(28px, 4vw, 40px);
-            line-height: 1.1;
-            margin: 16px 0 10px;
-        }
-
-        .edit-heading p {
-            color: #6b6258;
-            line-height: 1.7;
-            margin: 0;
-        }
-
-        .edit-form label {
-            display: block;
-            font-weight: 800;
-            margin: 19px 0 8px;
-        }
-
-        .edit-form input:not([type="hidden"]):not([type="file"]),
-        .edit-form textarea,
-        .edit-form select {
-            display: block;
-            box-sizing: border-box;
-            width: 100%;
-            padding: 13px 14px;
-            border: 2px solid #e5ded4;
-            border-radius: 12px;
-            background: #fffdf9;
-            color: var(--ink);
-            font: inherit;
-            outline: none;
-            transition: border-color .18s, box-shadow .18s;
-        }
-
-        .edit-form input:focus,
-        .edit-form textarea:focus,
-        .edit-form select:focus {
-            border-color: var(--orange);
-            box-shadow: 0 0 0 3px #ff6b3525;
-        }
-
-        .edit-form textarea {
-            min-height: 125px;
-            resize: vertical;
-            line-height: 1.6;
-        }
-
-        .edit-form input[type="file"] {
-            display: block;
-            box-sizing: border-box;
-            width: 100%;
-            padding: 12px;
-            border: 2px dashed #d8c9b7;
-            border-radius: 12px;
-            background: #fff9f0;
-            font: inherit;
-            font-size: 13px;
-        }
-
-        .edit-help {
-            display: block;
-            color: #746b60;
-            font-size: 12px;
-            line-height: 1.6;
-            margin-top: 8px;
-        }
-
-        .edit-error {
-            background: #ffe5e0;
-            color: #922d22;
-            border: 2px solid #922d22;
-            border-radius: 12px;
-            padding: 13px 15px;
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-
-        .current-photo {
-            background: #fff9f0;
-            border: 2px solid var(--ink);
-            border-radius: 16px;
-            padding: 12px;
-            margin-top: 10px;
-        }
-
-        .current-photo img {
-            display: block;
-            width: 100%;
-            max-width: 300px;
-            max-height: 260px;
-            object-fit: contain;
-            border-radius: 10px;
-            margin: 0 auto;
-        }
-
-        .no-current-photo {
-            min-height: 120px;
-            display: grid;
-            place-items: center;
-            text-align: center;
-            font-size: 42px;
-        }
-
-        .edit-submit {
-            width: 100%;
-            margin-top: 24px;
-            font-size: 15px;
+            grid-template-columns: 1fr;
         }
 
         .edit-aside {
-            display: grid;
-            gap: 18px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 520px) {
+        .edit-page {
+            width: calc(100% - 28px);
+            margin-top: 16px;
         }
 
-        .edit-promo {
-            background: var(--yellow);
-            border: 2px solid var(--ink);
-            border-radius: 22px;
-            padding: 24px;
-            box-shadow: 4px 4px 0 var(--ink);
+        .edit-nav {
+            margin-bottom: 20px;
         }
 
-        .edit-promo-icon {
-            font-size: 54px;
-            margin-bottom: 12px;
-        }
-
-        .edit-promo h2 {
-            font-size: 23px;
-            line-height: 1.2;
-            margin: 0 0 10px;
-        }
-
-        .edit-promo p {
-            line-height: 1.7;
-            margin: 0;
-        }
-
-        .edit-tips {
-            background: #e5f4db;
-            border: 2px solid var(--ink);
-            border-radius: 22px;
-            padding: 22px;
-        }
-
-        .edit-tips h3 {
-            margin: 0 0 12px;
-        }
-
-        .edit-tips p {
-            line-height: 1.7;
-            margin: 0;
-        }
-
-        .edit-footer {
-            text-align: center;
-            margin-top: 34px;
-            color: #746b60;
+        .edit-nav-links {
+            gap: 12px;
             font-size: 13px;
         }
 
-        @media (max-width: 760px) {
-            .edit-layout {
-                grid-template-columns: 1fr;
-            }
-
-            .edit-aside {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
+        .edit-card {
+            border-radius: 18px;
+            padding: 20px 16px;
         }
 
-        @media (max-width: 520px) {
-            .edit-page {
-                width: calc(100% - 28px);
-                margin-top: 16px;
-            }
-
-            .edit-nav {
-                margin-bottom: 20px;
-            }
-
-            .edit-nav-links {
-                gap: 12px;
-                font-size: 13px;
-            }
-
-            .edit-card {
-                border-radius: 18px;
-                padding: 20px 16px;
-                box-shadow: 4px 4px 0 var(--ink);
-            }
-
-            .edit-aside {
-                grid-template-columns: 1fr;
-            }
-
-            .edit-form input[type="file"] {
-                font-size: 12px;
-            }
+        .edit-aside {
+            grid-template-columns: 1fr;
         }
-    </style>
+
+        .edit-form input[type="file"] {
+            font-size: 12px;
+        }
+    }
+</style>
+
 </head>
 <body>
 <main class="edit-page">

@@ -101,297 +101,337 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Daftar - CampusMarket</title>
     <link rel="stylesheet" href="assets/style.css">
 
-    <style>
-        .register-page {
-            min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-        }
+    
+<style>
+:root {
+    --reg-blue: #2457d6;
+    --reg-blue-dark: #173b9b;
+    --reg-orange: #ff7139;
+    --reg-ink: #202844;
+    --reg-muted: #727b91;
+    --reg-border: #e5eaf5;
+    --ink: #202844;
+    --orange: #ff7139;
+    --yellow: #ffe58a;
+}
 
-        .register-nav {
-            width: min(1100px, 100%);
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        .register-nav-link {
-            font-size: 14px;
-            font-weight: 800;
-        }
+body {
+    margin: 0;
+    color: var(--reg-ink);
+    background: linear-gradient(135deg, #eef2ff 0%, #f8f9fd 55%, #fff0e8 100%);
+    font-family: "Plus Jakarta Sans", sans-serif;
+}
 
-        .register-nav-link:hover {
-            color: var(--orange);
-        }
+.register-page {
+    min-height: 100vh;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+}
 
-        .register-layout {
-            width: min(1040px, 100%);
-            margin: auto;
-            padding: 38px 0;
-            display: grid;
-            grid-template-columns: 0.85fr 1.15fr;
-            align-items: center;
-            gap: 50px;
-        }
+.register-nav {
+    width: min(1100px, 100%);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
 
-        .register-intro h1 {
-            font-size: clamp(38px, 5vw, 58px);
-            line-height: 1.04;
-            letter-spacing: -2px;
-            margin: 20px 0 16px;
-        }
+.register-nav .logo {
+    color: var(--reg-blue);
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    text-decoration: none;
+}
 
-        .register-intro h1 span {
-            color: var(--orange);
-        }
+.register-nav .logo span {
+    color: var(--reg-orange);
+}
 
-        .register-intro > p {
-            color: #746b60;
-            line-height: 1.8;
-            max-width: 390px;
-        }
+.register-nav-link {
+    color: var(--reg-blue);
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
+}
 
-        .register-benefits {
-            list-style: none;
-            padding: 0;
-            margin: 25px 0 0;
-            display: grid;
-            gap: 12px;
-        }
+.register-nav-link:hover {
+    color: var(--reg-orange);
+}
 
-        .register-benefits li {
-            display: flex;
-            align-items: center;
-            gap: 11px;
-            font-weight: 800;
-            font-size: 14px;
-        }
+.register-layout {
+    width: min(480px, 100%);
+    margin: auto;
+    padding: 36px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
 
-        .benefit-icon {
-            width: 36px;
-            height: 36px;
-            display: grid;
-            place-items: center;
-            flex-shrink: 0;
-            background: #fff;
-            border: 2px solid var(--ink);
-            border-radius: 12px;
-        }
+.register-intro {
+    width: 100%;
+    text-align: center;
+}
 
-        .register-art {
-            margin-top: 28px;
-            padding: 22px;
-            border: 2px solid var(--ink);
-            border-radius: 24px;
-            background: var(--yellow);
-            box-shadow: 5px 5px 0 var(--ink);
-            text-align: center;
-            font-size: 45px;
-        }
+.register-intro .eyebrow {
+    display: inline-block;
+    margin: 0 0 12px;
+    color: var(--reg-blue);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+}
 
-        .register-art p {
-            margin: 12px 0 0;
-            font-size: 13px;
-            font-weight: 900;
-        }
+.register-intro h1 {
+    margin: 0;
+    color: var(--reg-ink);
+    font-size: clamp(34px, 7vw, 45px);
+    line-height: 1.15;
+    letter-spacing: -1.8px;
+}
 
-        .register-card {
-            background: #fff;
-            border: 2px solid var(--ink);
-            border-radius: 26px;
-            padding: clamp(24px, 4vw, 36px);
-            box-shadow: 6px 6px 0 var(--ink);
-        }
+.register-intro h1 span {
+    color: var(--reg-blue);
+}
 
-        .register-card-heading {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 22px;
-        }
+.register-intro > p {
+    max-width: 410px;
+    margin: 14px auto 0;
+    color: var(--reg-muted);
+    font-size: 13px;
+    line-height: 1.8;
+}
 
-        .register-icon {
-            width: 58px;
-            height: 58px;
-            flex-shrink: 0;
-            display: grid;
-            place-items: center;
-            background: #ffc2d1;
-            border: 2px solid var(--ink);
-            border-radius: 18px;
-            font-size: 30px;
-            transform: rotate(-5deg);
-        }
+/* Hilangkan ilustrasi dan daftar benefit di samping */
+.register-art,
+.register-benefits {
+    display: none !important;
+}
 
-        .register-card h2 {
-            font-size: 27px;
-            margin: 0 0 5px;
-            letter-spacing: -0.8px;
-        }
+.register-card {
+    width: 100%;
+    padding: 30px;
+    border: 1px solid var(--reg-border);
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: 0 18px 55px rgba(35, 61, 117, .10);
+}
 
-        .register-card-heading p {
-            margin: 0;
-            color: #746b60;
-            font-size: 13px;
-            line-height: 1.6;
-        }
+.register-card-heading {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 23px;
+}
 
-        .register-error {
-            padding: 12px 14px;
-            margin-bottom: 18px;
-            border: 2px solid var(--ink);
-            border-radius: 12px;
-            color: #922d22;
-            background: #ffe5e0;
-            font-size: 13px;
-            font-weight: 700;
-            line-height: 1.6;
-        }
+.register-icon {
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 16px;
+    background: #e8eeff;
+    color: var(--reg-blue);
+    font-size: 26px;
+    transform: none;
+}
 
-        .register-form label {
-            display: block;
-            margin: 16px 0 7px;
-            font-size: 14px;
-            font-weight: 800;
-        }
+.register-card h2 {
+    margin: 0 0 5px;
+    font-size: 25px;
+    letter-spacing: -.7px;
+}
 
-        .register-form input {
-            box-sizing: border-box;
-            width: 100%;
-            min-width: 0;
-            padding: 12px 13px;
-            border: 2px solid #e5ded4;
-            border-radius: 12px;
-            background: #fffdf9;
-            color: var(--ink);
-            font: inherit;
-            outline: none;
-        }
+.register-card-heading p {
+    margin: 0;
+    color: var(--reg-muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
 
-        .register-form input:focus {
-            border-color: var(--orange);
-            box-shadow: 0 0 0 3px #ff6b3525;
-        }
+.register-error {
+    padding: 12px 14px;
+    margin-bottom: 18px;
+    border: 1px solid #ffd1c9;
+    border-radius: 12px;
+    color: #922d22;
+    background: #fff0ed;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.6;
+}
 
-        .register-form input::placeholder {
-            color: #aaa096;
-        }
+.register-form label {
+    display: block;
+    margin: 16px 0 8px;
+    color: var(--reg-ink);
+    font-size: 12px;
+    font-weight: 800;
+}
 
-        .register-field-note {
-            display: block;
-            margin-top: 7px;
-            color: #746b60;
-            font-size: 12px;
-            line-height: 1.5;
-        }
+.register-form input {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    padding: 13px 14px;
+    border: 1px solid #dfe4ef;
+    border-radius: 12px;
+    outline: none;
+    background: #fafbff;
+    color: var(--reg-ink);
+    font: inherit;
+    font-size: 13px;
+    transition: border-color .2s, box-shadow .2s;
+}
 
-        .register-password-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-        }
+.register-form input::placeholder {
+    color: #a0a8b9;
+}
 
-        .register-submit {
-            width: 100%;
-            justify-content: center;
-            margin-top: 25px;
-        }
+.register-form input:focus {
+    border-color: var(--reg-blue);
+    box-shadow: 0 0 0 3px rgba(36, 87, 214, .12);
+    background: #fff;
+}
 
-        .register-divider {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin: 22px 0;
-            color: #8a8176;
-            font-size: 12px;
-        }
+.register-field-note {
+    display: block;
+    margin-top: 7px;
+    color: var(--reg-muted);
+    font-size: 11px;
+    line-height: 1.6;
+}
 
-        .register-divider::before,
-        .register-divider::after {
-            content: "";
-            height: 1px;
-            flex: 1;
-            background: #e5ded4;
-        }
+.register-password-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
 
-        .register-login {
-            text-align: center;
-            font-size: 14px;
-            line-height: 1.8;
-        }
+.register-password-grid > div {
+    min-width: 0;
+}
 
-        .register-login a {
-            color: var(--orange);
-            font-weight: 900;
-        }
+.register-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 47px;
+    margin-top: 25px;
+    padding: 12px 16px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--reg-blue);
+    color: #fff;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background .2s, transform .2s;
+}
 
-        .register-login a:hover {
-            text-decoration: underline;
-        }
+.register-submit:hover {
+    background: var(--reg-blue-dark);
+    transform: translateY(-1px);
+}
 
-        .register-footer {
-            text-align: center;
-            color: #746b60;
-            font-size: 12px;
-            padding: 16px 0 4px;
-        }
+.register-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 23px 0;
+    color: #9299aa;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .5px;
+}
 
-        @media (max-width: 800px) {
-            .register-layout {
-                max-width: 500px;
-                grid-template-columns: 1fr;
-                gap: 30px;
-                padding: 35px 0 28px;
-            }
+.register-divider::before,
+.register-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--reg-border);
+}
 
-            .register-intro {
-                text-align: center;
-            }
+.register-login {
+    margin: 0;
+    color: var(--reg-muted);
+    font-size: 12px;
+    line-height: 1.9;
+    text-align: center;
+}
 
-            .register-intro h1 {
-                font-size: clamp(36px, 8vw, 48px);
-            }
+.register-login a {
+    color: var(--reg-blue);
+    font-weight: 800;
+    text-decoration: none;
+}
 
-            .register-intro > p {
-                margin-left: auto;
-                margin-right: auto;
-                font-size: 14px;
-            }
+.register-login a:hover {
+    color: var(--reg-orange);
+    text-decoration: underline;
+}
 
-            .register-benefits {
-                max-width: 300px;
-                margin: 22px auto 0;
-                text-align: left;
-            }
+.register-footer {
+    padding: 14px 0 4px;
+    color: var(--reg-muted);
+    font-size: 11px;
+    text-align: center;
+}
 
-            .register-art {
-                display: none;
-            }
-        }
+@media (max-width: 480px) {
+    .register-page {
+        padding: 16px;
+    }
 
-        @media (max-width: 480px) {
-            .register-page {
-                padding: 14px;
-            }
+    .register-nav .logo {
+        font-size: 21px;
+    }
 
-            .register-nav-link {
-                font-size: 12px;
-            }
+    .register-nav-link {
+        font-size: 11px;
+    }
 
-            .register-card {
-                padding: 22px 17px;
-                border-radius: 22px;
-            }
+    .register-layout {
+        padding: 30px 0 24px;
+        gap: 20px;
+    }
 
-            .register-password-grid {
-                grid-template-columns: 1fr;
-                gap: 0;
-            }
-        }
-    </style>
+    .register-intro h1 {
+        font-size: 35px;
+    }
+
+    .register-intro > p {
+        font-size: 12px;
+    }
+
+    .register-card {
+        padding: 23px 18px;
+        border-radius: 20px;
+    }
+
+    .register-card h2 {
+        font-size: 22px;
+    }
+
+    .register-password-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}
+</style>
+
 </head>
 <body>
 <main class="register-page">
@@ -432,13 +472,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     Promosikan jualanmu
                 </li>
                 <li>
-                    <span class="benefit-icon">🤝</span>
+                    <span class="benefit-icon"></span>
                     Dukung usaha teman kampus
                 </li>
             </ul>
 
             <div class="register-art" aria-hidden="true">
-                🥟 🍢 🍡 🧋
+                
                 <p>Jajan dekat, teman makin erat!</p>
             </div>
         </section>
@@ -558,7 +598,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <footer class="register-footer">
-        CampusMarket · Tempat jajan dan usaha mahasiswa 💛
+        CampusMarket · Tempat jajan dan usaha mahasiswa 
     </footer>
 
 </main>

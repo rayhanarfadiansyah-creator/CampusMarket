@@ -1,7 +1,6 @@
-
 <?php
-
-$host = '127.0.0.1';
+// LOCAL TEST ONLY — XAMPP. Do not upload this file to InfinityFree/live hosting.
+$host = 'localhost';
 $dbname = 'campusmarket_stupen';
 $username = 'root';
 $password = '';
@@ -20,5 +19,5 @@ try {
 } catch (PDOException $e) {
     error_log($e->getMessage());
     http_response_code(500);
-    exit('Koneksi database gagal. Periksa konfigurasi MySQL.');
+    exit('Koneksi database lokal gagal. Pastikan MySQL XAMPP aktif dan database campusmarket_stupen sudah diimpor.');
 }

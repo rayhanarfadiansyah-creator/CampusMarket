@@ -1532,3 +1532,118 @@ main {
         font-size: 31px;
     }
 }
+
+
+/* CampusMarket mobile UI refresh — local preview, backend unchanged */
+:root {
+    --cm-orange: #ff6b35;
+    --cm-blue: #dfe8ff;
+    --cm-ink: #26344b;
+    --cm-muted: #7c8799;
+    --cm-line: #edf0f7;
+}
+body {
+    font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+}
+.mobile-bottom-nav { display: none; }
+
+@media (max-width: 760px) {
+    body {
+        background: #f7f8fc;
+        color: var(--cm-ink);
+        padding-bottom: 82px;
+    }
+    .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        display: flex;
+        min-height: 62px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 12px 16px;
+        background: rgba(255,255,255,.96);
+        border-bottom: 1px solid var(--cm-line);
+        box-shadow: 0 3px 16px rgba(39,55,91,.04);
+    }
+    .navbar .logo { font-size: 18px; letter-spacing: -.7px; }
+    .navbar nav { display: none; }
+    .navbar > .button { padding: 9px 12px; font-size: 11px; border-radius: 11px; }
+    .hero {
+        margin: 0;
+        padding: 22px 16px 18px;
+        border-radius: 0 0 24px 24px;
+        background: linear-gradient(140deg, #fff 0%, #fff8f4 100%);
+        box-shadow: 0 6px 20px rgba(39,55,91,.035);
+    }
+    .hero-inner { display: block; max-width: none; }
+    .hero-copy { max-width: none; }
+    .hero .eyebrow { margin-bottom: 8px; font-size: 9px; letter-spacing: 1px; color: var(--cm-orange); }
+    .hero h1 { margin: 0 0 7px; font-size: clamp(23px, 6vw, 30px); line-height: 1.2; letter-spacing: -1.1px; }
+    .hero h1 span { color: var(--cm-orange); }
+    .hero-description { margin: 0; max-width: 340px; font-size: 11px; line-height: 1.65; color: var(--cm-muted); }
+    .hero-art, .hero-actions, .hero-stats { display: none !important; }
+    .catalog {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 17px 14px 20px;
+        max-width: none;
+    }
+    .searchbar { order: 0; width: 100%; margin: 0 0 17px; padding: 5px; border: 1px solid #edf0f7; border-radius: 14px; background: white; box-shadow: 0 4px 15px rgba(39,55,91,.045); }
+    .searchbar input { min-width: 0; padding: 10px 8px; font-size: 11px; background: transparent; }
+    .searchbar .button { padding: 10px 14px; border-radius: 10px; font-size: 11px; }
+    .section-heading { order: 1; align-items: flex-end; gap: 8px; margin: 0 0 11px; }
+    .section-heading .eyebrow { margin-bottom: 4px; font-size: 8px; letter-spacing: .8px; }
+    .section-heading h2 { margin: 0; font-size: 16px; letter-spacing: -.5px; }
+    .section-heading .muted { margin-top: 4px; font-size: 10px; }
+    .section-heading .count { flex-shrink: 0; font-size: 10px; }
+    .category-chips { order: 2; display: flex; gap: 7px; margin: 0 -2px 15px; padding: 2px 2px 7px; overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
+    .category-chips::-webkit-scrollbar { display: none; }
+    .chip { flex: 0 0 auto; padding: 8px 12px; border: 1px solid #e8ecf5; border-radius: 999px; background: white; color: #68758b; font-size: 10px; font-weight: 700; }
+    .chip.active, .chip[aria-pressed="true"] { border-color: var(--cm-orange); background: var(--cm-orange); color: white; }
+    .product-grid { order: 3; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; }
+    .product-card { min-width: 0; overflow: hidden; border: 1px solid #edf0f7; border-radius: 15px; background: white; box-shadow: 0 4px 14px rgba(39,55,91,.045); }
+    .product-card:hover { transform: none; }
+    .product-image { height: auto; aspect-ratio: 1.15 / 1; object-fit: cover; background: #e0e8ff; }
+    .product-placeholder { min-height: 112px; border-radius: 0; background: #e0e8ff; color: #7085b6; }
+    .product-placeholder span { font-size: 8px; }
+    .product-placeholder strong { font-size: 13px; }
+    .product-content { padding: 10px; }
+    .product-meta { gap: 4px; margin-bottom: 6px; }
+    .category, .condition { padding: 4px 6px; font-size: 8px; border-radius: 6px; }
+    .product-card h3 { display: -webkit-box; overflow: hidden; -webkit-line-clamp: 2; -webkit-box-orient: vertical; min-height: 30px; margin: 0 0 5px; font-size: 10px; line-height: 1.45; }
+    .description { display: -webkit-box; overflow: hidden; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin: 0 0 7px; color: #8791a3; font-size: 9px; line-height: 1.5; }
+    .catalog-product-foot { margin-top: 7px; }
+    .catalog-product-foot .price { font-size: 12px; font-weight: 800; color: var(--cm-orange); }
+    .product-sparkle { display: none; }
+    .order-button, .order-login, .order-unavailable { margin-top: 9px; padding: 9px 7px; border: 0; border-radius: 9px; background: var(--cm-orange); color: white; box-shadow: none; font-size: 9px; font-weight: 800; }
+    .order-button:hover { transform: none; box-shadow: none; }
+    .order-login { display: block; background: #fff0e9; color: #e85a29; }
+    .empty-state { order: 4; padding: 26px 16px; border-radius: 16px; background: white; }
+    .about { margin: 0 14px 18px; padding: 22px 18px; border-radius: 18px; }
+    .about h2 { font-size: 20px; }
+    .about p { font-size: 11px; }
+    footer { padding: 22px 16px; text-align: center; }
+    footer p { font-size: 10px; }
+    .mobile-bottom-nav {
+        position: fixed;
+        z-index: 50;
+        right: 0; bottom: 0; left: 0;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        padding: 9px 7px calc(9px + env(safe-area-inset-bottom));
+        border-top: 1px solid #edf0f7;
+        background: rgba(255,255,255,.97);
+        box-shadow: 0 -5px 22px rgba(39,55,91,.06);
+        backdrop-filter: blur(12px);
+    }
+    .mobile-nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: #98a1b2; text-decoration: none; }
+    .mobile-nav-item span { font-size: 22px; line-height: 1.1; }
+    .mobile-nav-item small { font-size: 9px; font-weight: 700; }
+    .mobile-nav-item.active { color: var(--cm-orange); }
+}
+@media (min-width: 761px) {
+    .mobile-bottom-nav { display: none !important; }
+}
