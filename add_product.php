@@ -23,6 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($name === '' || mb_strlen($name) > 180) {
         $error = 'Nama produk wajib diisi (maksimal 180 karakter).';
+    } elseif ($description === '') {
+        $error = 'Deskripsi produk wajib diisi agar pembeli memahami produk.';
+    } elseif ($categoryId === '') {
+        $error = 'Pilih kategori produk yang paling sesuai.';
     } elseif (!is_numeric($price) || (float) $price <= 0 ||
               (float) $price > 999999999) {
         $error = 'Harga harus lebih dari 0 dan tidak terlalu besar.';
@@ -44,39 +48,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if ($error === '') {
-            $imagePath = null;
+            $uploadedImages = [];
 
             try {
-                $imagePath = uploadProductImage($_FILES['image'] ?? []);
+                $uploadedImages = uploadMultipleProductImages($_FILES['images'] ?? []);
+                $imagePath = $uploadedImages[0] ?? null;
 
+                $pdo->beginTransaction();
                 $stmt = $pdo->prepare(
                     'INSERT INTO products
                         (user_id, category_id, name, description,
                          price, condition_type, image_url)
                      VALUES (?, ?, ?, ?, ?, ?, ?)'
                 );
-
                 $stmt->execute([
-                    (int) $_SESSION['user_id'],
-                    $categoryValue,
-                    $name,
-                    $description,
-                    $price,
-                    'Baru',
-                    $imagePath
+                    (int) $_SESSION['user_id'], $categoryValue,
+                    $name, $description, $price, 'Baru', $imagePath
                 ]);
+                $productId = (int) $pdo->lastInsertId();
+
+                if ($uploadedImages) {
+                    $imageStmt = $pdo->prepare(
+                        'INSERT INTO product_images (product_id, image_url, sort_order) VALUES (?, ?, ?)'
+                    );
+                    foreach ($uploadedImages as $order => $path) {
+                        $imageStmt->execute([$productId, $path, $order]);
+                    }
+                }
+                $pdo->commit();
 
                 header('Location: my_products.php?added=1');
                 exit;
             } catch (Throwable $e) {
-                if ($imagePath !== null) {
-                    deleteProductImage($imagePath);
-                }
-
+                if ($pdo->inTransaction()) $pdo->rollBack();
+                foreach ($uploadedImages as $path) deleteProductImage($path);
                 error_log($e->getMessage());
                 $error = $e instanceof RuntimeException
                     ? $e->getMessage()
-                    : 'Produk gagal disimpan. Periksa struktur tabel products.';
+                    : 'Produk gagal disimpan. Pastikan migrasi tabel foto produk sudah dijalankan.';
             }
         }
     }
@@ -89,7 +98,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Tambah Produk - CampusMarket</title>
     <link rel="stylesheet" href="assets/style.css">
-    ```html
 <style>
     :root {
         --blue: #1769aa;
@@ -458,8 +466,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </small>
 
                 <label for="category_id">Kategori produk</label>
-                <select id="category_id" name="category_id">
-                    <option value="">-- Pilih kategori (opsional) --</option>
+                <select id="category_id" name="category_id" required>
+                    <option value="">-- Pilih kategori produk --</option>
                     <?php foreach ($categories as $category): ?>
                         <option
                             value="<?= (int) $category['id'] ?>"
@@ -488,11 +496,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     Masukkan angka saja, tanpa titik atau simbol Rp.
                 </small>
 
-                <label for="description">Deskripsi produk</label>
+                <label for="description">Deskripsi produk *</label>
                 <textarea
                     id="description"
                     name="description"
                     maxlength="5000"
+                    required
                     placeholder="Contoh: Dimsum ayam homemade, isi 5 pcs, tersedia saus mentai."
                 ><?= h($description) ?></textarea>
                 <small class="add-product-help">
@@ -500,16 +509,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ukuran, varian, atau jumlah per porsi.
                 </small>
 
-                <label for="image">Foto produk (opsional)</label>
+                <label for="images">Foto produk (maksimal 5 foto)</label>
                 <input
-                    id="image"
-                    name="image"
+                    id="images"
+                    name="images[]"
                     type="file"
+                    multiple
                     accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
                 >
                 <small class="add-product-help">
-                    Format JPG, PNG, atau WebP. Ukuran maksimal 3 MB.
-                    Foto yang jelas bisa bikin produkmu lebih menarik!
+                    Pilih hingga 5 foto JPG, PNG, atau WebP (maksimal 3 MB per foto).
+                    Foto pertama menjadi foto utama. Gunakan foto asli yang sesuai produk.
                 </small>
 
                 <button class="button add-product-submit" type="submit">

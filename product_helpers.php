@@ -99,6 +99,47 @@ function uploadProductImage(array $file): ?string
     return 'uploads/products/' . $filename;
 }
 
+
+/** Upload beberapa foto produk (maksimal 5 file). */
+function uploadMultipleProductImages(array $files, int $maxFiles = 5): array
+{
+    if (!isset($files['name']) || !is_array($files['name'])) {
+        return [];
+    }
+
+    $count = count(array_filter($files['name'], static fn($name) => $name !== ''));
+    if ($count > $maxFiles) {
+        throw new RuntimeException("Maksimal {$maxFiles} foto untuk satu produk.");
+    }
+
+    $uploaded = [];
+    try {
+        foreach ($files['name'] as $index => $name) {
+            if ($name === '') {
+                continue;
+            }
+            $file = [
+                'name' => $name,
+                'type' => $files['type'][$index] ?? '',
+                'tmp_name' => $files['tmp_name'][$index] ?? '',
+                'error' => $files['error'][$index] ?? UPLOAD_ERR_NO_FILE,
+                'size' => $files['size'][$index] ?? 0,
+            ];
+            $path = uploadProductImage($file);
+            if ($path !== null) {
+                $uploaded[] = $path;
+            }
+        }
+    } catch (Throwable $e) {
+        foreach ($uploaded as $path) {
+            deleteProductImage($path);
+        }
+        throw $e;
+    }
+
+    return $uploaded;
+}
+
 function deleteProductImage(?string $path): void
 {
     if (!$path || !preg_match(

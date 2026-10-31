@@ -42,6 +42,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($name === '' || mb_strlen($name) > 180) {
         $error = 'Nama produk wajib diisi (maksimal 180 karakter).';
+    } elseif ($description === '') {
+        $error = 'Deskripsi produk wajib diisi agar pembeli memahami produk.';
+    } elseif ($categoryId === '') {
+        $error = 'Pilih kategori produk yang paling sesuai.';
     } elseif (!is_numeric($price) || (float) $price <= 0 ||
               (float) $price > 999999999) {
         $error = 'Harga harus lebih dari 0 dan tidak terlalu besar.';
@@ -63,44 +67,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($error === '') {
-        $newImage = null;
+        $uploadedImages = [];
 
         try {
-            $newImage = uploadProductImage($_FILES['image'] ?? []);
-            $imagePath = $newImage ?? $product['image_url'];
+            $uploadedImages = uploadMultipleProductImages($_FILES['images'] ?? []);
+            $imagePath = $product['image_url'];
+            if ($imagePath === null && $uploadedImages) $imagePath = $uploadedImages[0];
 
+            $pdo->beginTransaction();
             $stmt = $pdo->prepare(
                 'UPDATE products
                  SET name = ?, description = ?, price = ?,
                      category_id = ?, image_url = ?
                  WHERE id = ? AND user_id = ?'
             );
-
             $stmt->execute([
-                $name,
-                $description,
-                $price,
-                $categoryValue,
-                $imagePath,
-                $id,
-                (int) $_SESSION['user_id']
+                $name, $description, $price, $categoryValue,
+                $imagePath, $id, (int) $_SESSION['user_id']
             ]);
 
-            if ($newImage !== null) {
-                deleteProductImage($product['image_url']);
+            if ($uploadedImages) {
+                $maxStmt = $pdo->prepare('SELECT COALESCE(MAX(sort_order), -1) FROM product_images WHERE product_id = ?');
+                $maxStmt->execute([$id]);
+                $order = (int) $maxStmt->fetchColumn() + 1;
+                $imageStmt = $pdo->prepare(
+                    'INSERT INTO product_images (product_id, image_url, sort_order) VALUES (?, ?, ?)'
+                );
+                foreach ($uploadedImages as $path) {
+                    $imageStmt->execute([$id, $path, $order++]);
+                }
             }
+            $pdo->commit();
 
             header('Location: my_products.php?updated=1');
             exit;
         } catch (Throwable $e) {
-            if ($newImage !== null) {
-                deleteProductImage($newImage);
-            }
-
+            if ($pdo->inTransaction()) $pdo->rollBack();
+            foreach ($uploadedImages as $path) deleteProductImage($path);
             error_log($e->getMessage());
             $error = $e instanceof RuntimeException
                 ? $e->getMessage()
-                : 'Produk gagal diperbarui. Periksa struktur tabel products.';
+                : 'Produk gagal diperbarui. Pastikan migrasi tabel foto produk sudah dijalankan.';
         }
     }
 
@@ -470,9 +477,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     placeholder="Contoh: Dimsum ayam isi 5"
                 >
 
-                <label for="category_id">Kategori produk</label>
-                <select id="category_id" name="category_id">
-                    <option value="">-- Tanpa kategori --</option>
+                <label for="category_id">Kategori produk *</label>
+                <select id="category_id" name="category_id" required>
+                    <option value="">-- Pilih kategori produk --</option>
                     <?php foreach ($categories as $category): ?>
                         <option
                             value="<?= (int) $category['id'] ?>"
@@ -501,11 +508,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     Masukkan angka saja, tanpa titik atau simbol Rp.
                 </small>
 
-                <label for="description">Deskripsi produk</label>
+                <label for="description">Deskripsi produk *</label>
                 <textarea
                     id="description"
                     name="description"
                     maxlength="5000"
+                    required
                     placeholder="Jelaskan rasa, varian, ukuran, atau jumlah per porsi."
                 ><?= h($product['description'] ?? '') ?></textarea>
 
