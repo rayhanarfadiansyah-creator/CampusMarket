@@ -14,14 +14,30 @@ $sql = "
         p.price,
         p.condition_type,
         p.image_url,
-        c.name AS category_name
+        c.name AS category_name,
+        u.name AS seller_name
     FROM products p
     LEFT JOIN categories c ON c.id = p.category_id
+    LEFT JOIN users u ON u.id = p.user_id
     ORDER BY p.created_at DESC
 ";
 
 $stmt = $pdo->query($sql);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Ambil galeri foto untuk setiap produk; image_url lama tetap menjadi fallback.
+$imageGalleryStmt = $pdo->prepare(
+    'SELECT image_url FROM product_images WHERE product_id = ? ORDER BY sort_order, id'
+);
+foreach ($products as &$product) {
+    $imageGalleryStmt->execute([(int) $product['id']]);
+    $gallery = $imageGalleryStmt->fetchAll(PDO::FETCH_COLUMN);
+    if (!$gallery && !empty($product['image_url'])) {
+        $gallery = [$product['image_url']];
+    }
+    $product['gallery_images'] = $gallery;
+}
+unset($product);
 
 $categoryStmt = $pdo->query(
     "SELECT id, name FROM categories ORDER BY name ASC"
@@ -453,6 +469,27 @@ input {
     object-fit: cover;
 }
 
+.product-gallery {
+    position: relative;
+    width: 100%;
+    height: 190px;
+    background: #f1f5f9;
+}
+.product-gallery .product-image { height: 100%; }
+.gallery-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 30px; height: 30px; border: 0; border-radius: 50%;
+    background: rgba(15, 23, 42, .72); color: #fff; font-size: 22px;
+    line-height: 1; cursor: pointer;
+}
+.gallery-prev { left: 8px; }
+.gallery-next { right: 8px; }
+.gallery-count {
+    position: absolute; right: 8px; bottom: 8px; padding: 3px 8px;
+    border-radius: 20px; background: rgba(15, 23, 42, .72);
+    color: #fff; font-size: 11px;
+}
+
 .product-placeholder {
     display: flex;
     flex-direction: column;
@@ -515,6 +552,13 @@ input {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
 }
+
+.seller-label {
+    margin: 10px 0 0;
+    color: var(--cm-muted);
+    font-size: 11px;
+}
+.seller-label strong { color: var(--cm-ink); }
 
 .description {
     display: -webkit-box;
@@ -1191,16 +1235,23 @@ footer p {
                 ✨ Semua
             </button>
 
-            <?php foreach ($categories as $category): ?>
-                <button
-                    class="chip"
-                    type="button"
-                    data-category="<?= e($category['name']) ?>"
-                    aria-pressed="false"
-                >
-                    <?= e($category['name']) ?>
-                </button>
-            <?php endforeach; ?>
+            <button
+                class="chip"
+                type="button"
+                data-category="makanan"
+                aria-pressed="false"
+            >
+                🍽️ Makanan
+            </button>
+
+            <button
+                class="chip"
+                type="button"
+                data-category="lainnya"
+                aria-pressed="false"
+            >
+                📦 Lainnya
+            </button>
         </div>
 
         <?php if (count($products) > 0): ?>
@@ -1208,6 +1259,15 @@ footer p {
                 <?php foreach ($products as $product): ?>
                     <?php
                     $categoryName = $product['category_name'] ?: 'Lainnya';
+
+                    // Kelompok filter katalog: hanya Makanan dan Lainnya.
+                    // Kategori kuliner lama tetap dikenali sebagai Makanan.
+                    $normalizedCategory = mb_strtolower(trim($categoryName), 'UTF-8');
+                    $isFoodCategory = (bool) preg_match(
+                        '/makanan|minuman|kuliner|camilan|cemilan|snack|dessert|\bkue\b|\broti\b|\bfood\b|beverage/i',
+                        $normalizedCategory
+                    );
+                    $filterCategory = $isFoodCategory ? 'makanan' : 'lainnya';
 
                     $searchText = strtolower(
                         $product['name'] . ' ' .
@@ -1225,16 +1285,24 @@ footer p {
 
                     <article
                         class="product-card"
-                        data-category="<?= e($categoryName) ?>"
+                        data-category="<?= e($filterCategory) ?>"
                         data-search="<?= e($searchText) ?>"
                     >
-                        <?php if (!empty($product['image_url'])): ?>
-                            <img
-                                class="product-image"
-                                src="<?= e($product['image_url']) ?>"
-                                alt="<?= e($product['name']) ?>"
-                                loading="lazy"
-                            >
+                        <?php if (!empty($product['gallery_images'])): ?>
+                            <div class="product-gallery" data-gallery>
+                                <img
+                                    class="product-image"
+                                    src="<?= e($product['gallery_images'][0]) ?>"
+                                    alt="<?= e($product['name']) ?>"
+                                    loading="lazy"
+                                >
+                                <?php if (count($product['gallery_images']) > 1): ?>
+                                    <button class="gallery-arrow gallery-prev" type="button" aria-label="Foto sebelumnya" data-gallery-prev>‹</button>
+                                    <button class="gallery-arrow gallery-next" type="button" aria-label="Foto berikutnya" data-gallery-next>›</button>
+                                    <span class="gallery-count" data-gallery-count>1 / <?= count($product['gallery_images']) ?></span>
+                                    <script type="application/json" class="gallery-data"><?= json_encode(array_values($product['gallery_images']), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) ?></script>
+                                <?php endif; ?>
+                            </div>
                         <?php else: ?>
                             <div class="product-placeholder">
                                 <span>✦ CAMPUS PICK ✦</span>
@@ -1264,6 +1332,8 @@ footer p {
                                     ?: 'Belum ada deskripsi produk.'
                                 ) ?>
                             </p>
+
+                            <p class="seller-label">Dijual oleh <strong><?= e($product['seller_name'] ?: 'Penjual CampusMarket') ?></strong></p>
 
                             <div class="catalog-product-foot">
                                 <p class="price">
@@ -1372,7 +1442,7 @@ footer p {
 <nav class="mobile-bottom-nav" aria-label="Navigasi mobile">
     <a class="mobile-nav-item active" href="index.php"><span aria-hidden="true">⌂</span><small>Beranda</small></a>
     <a class="mobile-nav-item" href="#katalog"><span aria-hidden="true">⌕</span><small>Cari</small></a>
-    <a class="mobile-nav-item" href="<?= $isLoggedIn ? 'cart.php' : 'login.php' ?>"><span aria-hidden="true">♡</span><small>Keranjang</small></a>
+    <a class="mobile-nav-item" href="<?= $isLoggedIn ? 'cart.php' : 'login.php' ?>"><span aria-hidden="true">🛒</span><small>Keranjang</small></a>
     <a class="mobile-nav-item" href="<?= $isLoggedIn ? 'profile.php' : 'login.php' ?>"><span aria-hidden="true">◉</span><small>Profil</small></a>
 </nav>
 
@@ -1472,5 +1542,24 @@ footer p {
 })();
 </script>
 
+<script>
+document.querySelectorAll('[data-gallery]').forEach((gallery) => {
+    const data = gallery.querySelector('.gallery-data');
+    if (!data) return;
+    let images;
+    try { images = JSON.parse(data.textContent); } catch (_) { return; }
+    if (!Array.isArray(images) || images.length < 2) return;
+    const image = gallery.querySelector('img');
+    const count = gallery.querySelector('[data-gallery-count]');
+    let current = 0;
+    const show = (step) => {
+        current = (current + step + images.length) % images.length;
+        image.src = images[current];
+        count.textContent = `${current + 1} / ${images.length}`;
+    };
+    gallery.querySelector('[data-gallery-prev]').addEventListener('click', () => show(-1));
+    gallery.querySelector('[data-gallery-next]').addEventListener('click', () => show(1));
+});
+</script>
 </body>
 </html>
